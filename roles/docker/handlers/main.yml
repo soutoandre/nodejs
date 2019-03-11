@@ -1,0 +1,11 @@
+- name:  docker restart
+  service: name=docker state=restarted
+
+- name:  reload systemd
+  command: systemctl daemon-reload
+
+- name:    restart postgres_exporter
+  command: docker-composer -f /pgsql/docker/docker-compose.yml  restart
+
+- name: Remove docker-compose
+  file: path=/pgsql/docker/docker-compose.yml state=absent

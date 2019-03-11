@@ -1,0 +1,8 @@
+---
+- name: Install Packages from postgres Repo
+  include: installsetup.yml
+  when: install_node
+  tags:
+    - nodeinstall
+
+

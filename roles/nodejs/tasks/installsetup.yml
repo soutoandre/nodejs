@@ -1,0 +1,38 @@
+---
+
+- name: node | create group
+  group:
+    name: node
+    state: present
+
+- name: node | create user
+  user:
+    name: node
+    comment: node user
+    group: node
+    state: present
+
+- name: node |download 
+  get_url:
+    url: https://nodejs.org/dist/{{ version_node }}/node-{{ version_node }}-linux-x64.tar.xz
+    dest: /tmp/node-{{ version_node }}-linux-x64.tar.xz
+    owner: node
+
+
+- name: node | extract
+  unarchive:
+    src: /tmp/node-{{ version_node }}-linux-x64.tar.xz
+    dest: /usr/local/
+    remote_src: yes
+    owner: node 
+
+#- name: node | rename
+#  shell:
+#       > 
+#       mv /usr/local/node-v10.15.3-linux-x64  /usr/local/node 
+
+
+#- name: node | create profile
+#  template: src=node.profile  dest=/etc/profile.d/node.sh mode=755 
+
+

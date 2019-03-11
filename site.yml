@@ -1,0 +1,9 @@
+---
+- name: install node
+  hosts: node
+  remote_user: ansible
+  roles: 
+      - nodejs
+
+  tags:
+    - nodeinstall
