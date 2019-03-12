@@ -1,4 +1,3 @@
 ---
 version_node: v10.15.3
 install_node: false
-firewalld_disabled: True

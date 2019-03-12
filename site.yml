@@ -1,6 +1,7 @@
 ---
 - name: install node
   hosts: node
+  become: yes
   remote_user: ansible
   roles: 
       - nodejs
