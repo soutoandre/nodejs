@@ -65,7 +65,10 @@
 
 - name: node | service pm2
   template: name=pm2.service  dest=/etc/systemd/system/pm2-node.service 
-  
+  notify: reload systemd
+
+- name: node | startup pm2
+  service: name=pm2-node.service state=started enabled=yes
 
 - name: app node | start app
   command: pm2 start  /home/node/desafio2/server.js --name node-desafio2 -i max
