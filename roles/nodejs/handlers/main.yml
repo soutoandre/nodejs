@@ -1,9 +1,7 @@
 ---
-- name: restart postgresql-11
-  service: name=postgresql-11 state=restarted
+- name: restart  node.service
+  service: name=node.service state=restarted
 
-- name: restart firewalld
-  service: name=firewalld state=restarted
+- name: reload systemd 
+  command: systemctl --system daemon-reload
 
-- name:  reload systemd
-  command: systemctl daemon-reload

@@ -12,6 +12,10 @@
     group: node
     state: present
 
+
+- name: node |create diretory
+  file: path=/usr/local/node  state=directory
+
 - name: node |download 
   get_url:
     url: https://nodejs.org/dist/{{ version_node }}/node-{{ version_node }}-linux-x64.tar.xz
@@ -22,31 +26,47 @@
 - name: node | extract
   unarchive:
     src: /tmp/node-{{ version_node }}-linux-x64.tar.xz
-    dest: /usr/local/
+    dest: /usr/local/node
+    extra_opts: [--strip-components=1]
     remote_src: yes
     owner: node 
     group: node
   args: 
-    creates: /usr/local/node-{{ version_node }}-linux-x64/bin/node
-
-- name: node | rename
-  shell:
-       > 
-       mv /usr/local/node-v10.15.3-linux-x64  /usr/local/node; ln -s /usr/local/node/bin/node  /usr/bin/node
-  args:
     creates: /usr/local/node/bin/node
+
+- name: node | create link
+  file: 
+    src: /usr/local/node/bin/node
+    dest: /usr/bin/node
+    owner: node
+    state: link
 
 - name: node | create profile
   template: src=node.profile  dest=/etc/profile.d/node.sh  mode=755 
 
+- name: node | Clone desafio2   
+  git: 
+    repo: https://github.com/soutoandre/desafio2.git
+    dest: /home/node/desafio2
+    force: yes
+    version: master
+  
+- name: node | Copy files
+  file: path=/home/node/desafio2/{{ item }} remote_src=yes  backup=yes owner=node group=node mode=0644 state=file
+  with_items:
+    - package.json
+    - server.js
 
-- name: node | install express
-  shell:
-       > 
-       /usr/local/node/bin/npm install --save express ; chown node:node -R /usr/local/node/lib/node_modules
-  args:
-    chdir: /usr/local/node/lib/node_modules
-    creates: /usr/local/node/lib/node_modules/express/index.js     
+- name: node | Install packages based on package.json.
+  npm: path=/home/node/desafio2 state=present executable=/usr/local/node/bin/npm
 
+- name: node | install pm2
+  npm: name=pm2  global=yes state=present executable=/usr/local/node/bin/npm
 
+- name: node | service pm2
+  template: name=pm2.service  dest=/etc/systemd/system/pm2-node.service 
+  
+
+- name: app node | start app
+  command: pm2 start  /home/node/desafio2/server.js --name node-desafio2 -i max
 

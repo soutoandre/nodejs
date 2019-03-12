@@ -1,0 +1,19 @@
+[Unit]
+Description=NodeJS Web Application
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/node/desafio2/server.js
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=node
+User=node
+Group=node
+Environment=PATH=/usr/bin:/usr/local/bin:/usr/local/node/bin
+#Environment=NODE_ENV=production
+WorkingDirectory=/home/node
+
+[Install]
+WantedBy=multi-user.target

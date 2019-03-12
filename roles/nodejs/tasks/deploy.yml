@@ -1,0 +1,18 @@
+---
+- name: app node | clone repo
+  git:
+    repo: https://github.com/soutoandre/desafio2.git
+    dest: /home/node/desafio2
+    force: yes
+    version: master
+
+- name: node | Install packages based on package.json.
+  npm: path=/home/node/desafio2 state=present executable=/usr/local/node/bin/npm
+
+- name: app node | reload app
+  command: pm2 reload /home/node/desafio2/server.js --name node-desafio -i max 
+
+
+
+
+
