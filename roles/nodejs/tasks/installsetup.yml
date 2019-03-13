@@ -1,5 +1,4 @@
 ---
-
 - name: node | create group
   group:
     name: node
