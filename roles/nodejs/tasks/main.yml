@@ -1,14 +1,12 @@
 ---
-- name: Install Packages from postgres Repo
+- name: Install Nodejs
   include: installsetup.yml
-  when: nodeins == "true"
+  when: nodeins 
   tags:
-    - nodeinstall
-
+    - install
 
 - name: deploy app 
   include: deploy.yml
   tags:
-    - deploy
-
+   - deploy
 

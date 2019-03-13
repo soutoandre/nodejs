@@ -3,6 +3,8 @@
   group:
     name: node
     state: present
+  tags:
+    - install
 
 - name: node | create user
   user:
@@ -10,10 +12,14 @@
     comment: node user
     group: node
     state: present
+  tags:
+    - install
 
 
 - name: node |create diretory
   file: path=/usr/local/node  state=directory
+  tags:
+    - install
 
 - name: node |download 
   get_url:
@@ -21,6 +27,8 @@
     dest: /tmp/node-{{ version_node }}-linux-x64.tar.xz
     #args:
     #creates: /tmp/node.download
+  tags:
+    - install
 
 - name: node | extract
   unarchive:
@@ -32,6 +40,8 @@
     group: node
   args: 
     creates: /usr/local/node/bin/node
+  tags:
+    - install
 
 - name: node | create link
   file: 
@@ -39,9 +49,14 @@
     dest: /usr/bin/node
     owner: node
     state: link
+  tags:
+    - install
 
 - name: node | create profile
   template: src=node.profile  dest=/etc/profile.d/node.sh  mode=755 
+  tags:
+    - install
+
 
 - name: node | Clone desafio2   
   git: 
@@ -49,26 +64,40 @@
     dest: /home/node/desafio2
     force: yes
     version: master
+  tags:
+    - install
   
 - name: node | Copy files
   file: path=/home/node/desafio2/{{ item }} remote_src=yes  backup=yes owner=node group=node mode=0644 state=file
   with_items:
     - package.json
     - server.js
+  tags:
+    - install
 
 - name: node | Install packages based on package.json.
   npm: path=/home/node/desafio2 state=present executable=/usr/local/node/bin/npm
+  tags:
+    - install
 
 - name: node | install pm2
   npm: name=pm2  global=yes state=present executable=/usr/local/node/bin/npm
+  tags:
+    - install
 
 - name: node | service pm2
   template: src=pm2.service  dest=/etc/systemd/system/pm2-node.service 
   notify: reload systemd
+  tags:
+    - install
 
 - name: node | startup pm2
   service: name=pm2-node.service state=started enabled=yes
+  tags:
+    - install
 
-- name: app node | start app
+- name: node | start app
   command: su - node -c "/usr/local/node/bin/pm2 start  /home/node/desafio2/server.js --name node-desafio2 -i max"
+  tags:
+    - install
 
