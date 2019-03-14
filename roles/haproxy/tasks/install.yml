@@ -1,0 +1,24 @@
+---
+- name: haproxy | install software-properties-common
+  apt:
+    name: software-properties-common
+    state: present
+
+- name: Install lsb-release
+  apt:
+    name: lsb-release
+
+- name: haproxy | install repo
+  apt_repository:
+    repo: 'ppa:vbernat/haproxy-1.9'
+    codename: xenial
+
+- name: Install packages initial
+  apt: name={{ item }}  state=latest
+  with_items:
+    - haproxy 
+
+- name: haproxy | template
+  template: src=haproxy.cfg  dest=/etc/haproxy/haproxy.cfg owner=haproxy 
+  
+

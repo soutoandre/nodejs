@@ -1,19 +1,25 @@
 ---
 - name: app node | clone repo
   git:
-    repo: https://github.com/soutoandre/desafio2.git
-    dest: /home/node/desafio2
+    repo: https://github.com/soutoandre/{{ repo_desafio2 }}.git
+    dest: /home/node/{{ repo_desafio2 }}
     force: yes
     version: master
+  become: yes
+  become_user: node
   tags:
    - deploy
 
 - name: app node | Install packages based on package.json.
-  npm: path=/home/node/desafio2 state=present executable=/usr/local/node/bin/npm
+  npm: path=/home/node/{{ repo_desafio2 }} state=present executable=/usr/local/node/bin/npm
   tags:
     - deploy
 
 - name: app node | reload app
-  command: su - node -c "/usr/local/node/bin/pm2 reload /home/node/desafio2/server.js --name node-desafio -i max "
+  command: su - node -c "/usr/local/node/bin/pm2 reload /home/node/{{ repo_desafio2 }}/pm2.json"
+  #become: yes
+  #become_method: su
+  #become_user: node
+  #become_flags: '-c '
   tags:
     - deploy

@@ -1,0 +1,6 @@
+---
+- name: haproxy| installing
+  include: install.yml
+  when: install_haproxy
+  tags:
+    - haproxy
