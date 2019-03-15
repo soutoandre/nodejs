@@ -9,6 +9,8 @@
 
 - name : app node | backup
   command: tar jcvf /home/node/backup/{{ repo_desafio2 }}-{{ ansible_date_time.date }}.bz2  ./
+  become: yes
+  become_user: node
   args:
     chdir: /home/node/{{ repo_desafio2 }}
   when: backup_app.stat.exists == false
@@ -34,5 +36,14 @@
 
 - name: app node | reload app
   command: su - node -c "/usr/local/node/bin/pm2 reload /home/node/{{ repo_desafio2 }}/pm2.json"
+  tags:
+    - deploy
+
+- name: node | startup app
+  command: /usr/local/node/bin/pm2  save
+  become: yes
+  become_user: node
+  args:
+    chdir: /home/node/
   tags:
     - deploy

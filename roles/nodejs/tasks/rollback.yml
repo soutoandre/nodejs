@@ -1,7 +1,11 @@
 ---
 
 - name : app node | rollback
-  command: su - node -c  "tar jxvf /home/node/backup/{{ repo_desafio2 }}-$(date +%Y-%m-%d).bz2 -C /home/node/{{ repo_desafio2 }}"
+  command: tar jxvf /home/node/backup/{{ repo_desafio2 }}-{{ date_roll }}.bz2 -C /home/node/{{ repo_desafio2 }}
+  become: yes
+  become_user: node
+  args:
+    chdir:  /home/node/{{ repo_desafio2 }}
   tags:
     - rollback
 

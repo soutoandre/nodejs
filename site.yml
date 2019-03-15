@@ -6,11 +6,3 @@
   roles: 
       - nodejs
 
-
-
-- name: Haproxy
-  hosts: node
-  become: yes
-  remote_user: ansible
-  roles:
-    - haproxy
