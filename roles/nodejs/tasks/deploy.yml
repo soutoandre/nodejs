@@ -1,4 +1,20 @@
 ---
+
+- name: app node | check backup file exists
+  stat: 
+    path: /home/node/backup/{{ repo_desafio2 }}-{{ ansible_date_time.date }}.bz2
+  register: backup_app
+  tags:
+    - deploy
+
+- name : app node | backup
+  command: tar jcvf /home/node/backup/{{ repo_desafio2 }}-{{ ansible_date_time.date }}.bz2  ./
+  args:
+    chdir: /home/node/{{ repo_desafio2 }}
+  when: backup_app.stat.exists == false
+  tags:
+    - deploy
+
 - name: app node | clone repo
   git:
     repo: https://github.com/soutoandre/{{ repo_desafio2 }}.git
@@ -15,11 +31,8 @@
   tags:
     - deploy
 
+
 - name: app node | reload app
   command: su - node -c "/usr/local/node/bin/pm2 reload /home/node/{{ repo_desafio2 }}/pm2.json"
-  #become: yes
-  #become_method: su
-  #become_user: node
-  #become_flags: '-c '
   tags:
     - deploy

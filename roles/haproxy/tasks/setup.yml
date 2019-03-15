@@ -5,15 +5,8 @@
     dest: /etc/systemd/system/haproxy.service
   notify:
     - restart haproxy
-
-
-- name: haproxy | copying sysconfig
-  template:
-    src: sysconfig.haproxy
-    dest: /etc/sysconfig/haproxy
-  notify:
-    - restart haproxy
-
+  tags:
+    - haproxy  
 
 - name: haproxy | copying haproxy.cfg
   template:
@@ -21,9 +14,11 @@
     dest: /etc/haproxy/haproxy.cfg
   notify:
     - reload haproxy
-
+  tags:
+    - haproxy
 
 - name: haproxy | starting service
   systemd: name=haproxy state=started enabled=yes daemon_reload=yes
-
+  tags:
+    - haproxy
 

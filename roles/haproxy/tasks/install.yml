@@ -3,10 +3,14 @@
   apt:
     name: software-properties-common
     state: present
+  tags:
+    - in_haproxy 
 
 - name: Install lsb-release
   apt:
     name: lsb-release
+  tags:
+    - in_haproxy
 
 - name: haproxy | install repo
   apt_repository:
@@ -17,8 +21,12 @@
   apt: name={{ item }}  state=latest
   with_items:
     - haproxy 
+  tags:
+   - in_haproxy
 
-- name: haproxy | template
-  template: src=haproxy.cfg  dest=/etc/haproxy/haproxy.cfg owner=haproxy 
-  
-
+- name: haproxy | copying haproxy.cfg
+  template:
+    src: haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+  tags:
+    - in_haproxy

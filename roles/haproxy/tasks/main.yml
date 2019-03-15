@@ -3,4 +3,9 @@
   include: install.yml
   when: install_haproxy
   tags:
-    - haproxy
+    - in_haproxy
+
+- name: haproxy | setup
+  include: setup.yml
+  tags:
+    - haproxy 

@@ -10,3 +10,9 @@
   tags:
    - deploy
 
+
+- name: rollback app
+  include: rollback.yml
+  tags:
+   - rollback
+
