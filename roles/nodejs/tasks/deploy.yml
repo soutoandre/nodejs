@@ -1,5 +1,4 @@
 ---
-
 - name: app node | check backup file exists
   stat: 
     path: /home/node/backup/{{ repo_desafio2 }}-{{ ansible_date_time.date }}.bz2
