@@ -1,13 +1,19 @@
 ---
-
-- name : app node | rollback
-  command: tar jxvf /home/node/backup/{{ repo_desafio2 }}-{{ date_roll }}.bz2 -C /home/node/{{ repo_desafio2 }}
+- name: app node | rollback  reset
+  shell: git reset $(git log |grep commit |sed -n 2p|awk  '{print $2}')
   become: yes
   become_user: node
   args:
     chdir:  /home/node/{{ repo_desafio2 }}
   tags:
     - rollback
+
+- name: app node | rollback head
+  shell: git reset --hard HEAD
+  become: yes
+  become_user: node
+  args:
+    chdir:  /home/node/{{ repo_desafio2 }}
 
 
 - name: app node | Install packages based on package.json.

@@ -3,7 +3,7 @@ haproxy_port: 9000
 haproxy_dir: /etc/haproxy
 haproxy_stats_user: admin
 haproxy_admin_sock: /run/haproxy_admin.sock
-haproxy_stats_pass: "{{ pass_haproxy }}"
+haproxy_stats_pass: 12qwaszx
 firewalld_disabled: true
 
 
