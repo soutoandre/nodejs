@@ -19,3 +19,4 @@ Para fazer o Rollback da aplicação executar o comando abaixo
 
     sudo ansible-playbook -i inventory site.yml -t rollback
 
+    ex. sudo ansible-playbook -i inventory site.yml  -t rollback -e "v_tag=v1.0" 

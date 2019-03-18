@@ -1,20 +1,12 @@
 ---
-- name: app node | rollback  reset
-  shell: git reset $(git log |grep commit |sed -n 2p|awk  '{print $2}')
+- name: app node | rollback reset tag
+  shell: git reset --hard {{ v_tag }}
   become: yes
   become_user: node
   args:
     chdir:  /home/node/{{ repo_desafio2 }}
   tags:
     - rollback
-
-- name: app node | rollback head
-  shell: git reset --hard HEAD
-  become: yes
-  become_user: node
-  args:
-    chdir:  /home/node/{{ repo_desafio2 }}
-
 
 - name: app node | Install packages based on package.json.
   npm: path=/home/node/{{ repo_desafio2 }} state=present executable=/usr/local/node/bin/npm
