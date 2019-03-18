@@ -2,7 +2,7 @@
 
 Desafio2 nodejs
 
-Para incluir os servidors os quais irão receber a aplicação somente edite o seguinte arquivo:
+Para incluir os servidores os quais irão receber a aplicação somente edite o seguinte arquivo:
 
     vim inventory
 
