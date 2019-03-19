@@ -111,3 +111,16 @@
   tags:
     - install
 
+- name: node | monitor
+  template : src={{ item }}   dest=/root/{{ item }}  owner=root mode=755
+  with_items:
+    - monitor.sh
+  tags:
+    - ngnix
+
+- name:  node  | crontab monitor
+  cron:
+    name: "monitor node"
+    minute: "*/2"
+    job: "/root/monitor.sh"
+
