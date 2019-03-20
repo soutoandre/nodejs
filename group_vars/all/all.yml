@@ -1,5 +1,3 @@
 repo_desafio2: desafio2
 version_node: v10.15.3
 nodeins: false
-pass_haproxy : "{{ vault_pass_haproyx }}"
-install_haproxy: false
